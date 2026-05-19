@@ -1,3 +1,8 @@
 {
-    "python-envs.defaultEnvManager": "ms-python.python:system"
+    "python.defaultInterpreterPath": "c:\\Users\\madha\\OneDrive\\Desktop\\anscor-ai\\backend\\venv\\Scripts\\python.exe",
+    "python.pythonPath": "c:\\Users\\madha\\OneDrive\\Desktop\\anscor-ai\\backend\\venv\\Scripts\\python.exe",
+    "python.analysis.extraPaths": [
+        "c:\\Users\\madha\\OneDrive\\Desktop\\anscor-ai\\backend\\venv\\Lib\\site-packages"
+    ],
+    "python.analysis.autoSearchPaths": true
 }
