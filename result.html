@@ -195,6 +195,24 @@
 
     </div>
 
+    <div style="text-align:center; margin-top:20px;">
+
+        <img
+           id="uploadedImage"
+           class="result-image"
+           style="
+               width:250px;
+               height:250px;
+               object-fit:cover;
+               border-radius:15px;
+               border:3px solid #ff4dd2;
+               display:block;
+               margin:auto;
+          "
+       >
+
+    </div>
+
 
     <!-- RESULT SCRIPT -->
 
@@ -265,12 +283,18 @@
         // ======================
         // IMAGE
         // ======================
-
         if (image) {
 
             document.getElementById(
                 "uploadedImage"
             ).src = image;
+
+        } else {
+
+            document.getElementById(
+                "uploadedImage"
+            ).alt =
+                "No image uploaded";
         }
 
 
