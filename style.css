@@ -2,7 +2,7 @@ body {
     margin: 0;
     font-family: Arial;
 
-    background: linear-gradient(rgba(0,0,0,0.6), rgba(0,0,0,0.6)),
+    background: linear-gradient(rgba(0,0,0,0.75), rgba(0,0,0,0.75)),
                 url("./assets/medical.jpg");
 
     background-size: cover;
@@ -49,7 +49,7 @@ body {
     height: 100vh;
     position: relative;
 
-    background: linear-gradient(rgba(0,0,0,0.6), rgba(0,0,0,0.6)),
+    background: linear-gradient(rgba(0,0,0,0.75), rgba(0,0,0,0.75)),
                 url("./assets/bg.jpg");
     background-size: cover;
     background-position: center;
@@ -241,7 +241,8 @@ button {
 }
 
 body {
-    background: url("assets/medical.jpg") no-repeat center center fixed;
+    background: linear-gradient(rgba(0,0,0,0.75), rgba(0,0,0,0.75)),
+                url("assets/medical.jpg") no-repeat center center fixed;
     background-size: cover;
 }
 
@@ -523,4 +524,91 @@ body {
     .result-banner h2{
         font-size: 25px;
     }
+}
+
+
+/* ===== PROFILE PAGE ===== */
+
+.profile-info {
+    text-align: left;
+    max-width: 500px;
+    margin: 0 auto;
+}
+
+.profile-info p {
+    padding: 10px 0;
+    border-bottom: 1px solid rgba(255,255,255,0.15);
+    font-size: 16px;
+    color: #eee;
+}
+
+.profile-info b {
+    color: #00e6e6;
+    display: inline-block;
+    width: 130px;
+}
+
+
+/* ===== PAST RECORDS ===== */
+
+.record-card {
+    background: rgba(255,255,255,0.08);
+    border: 1px solid rgba(255,255,255,0.12);
+    border-radius: 12px;
+    padding: 18px;
+    margin-bottom: 15px;
+    text-align: left;
+    transition: transform 0.2s, background 0.2s;
+}
+
+.record-card:hover {
+    transform: translateY(-2px);
+    background: rgba(255,255,255,0.12);
+}
+
+.record-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-bottom: 12px;
+}
+
+.record-date {
+    font-size: 14px;
+    color: #aaa;
+}
+
+.record-badge {
+    padding: 4px 14px;
+    border-radius: 20px;
+    font-size: 13px;
+    font-weight: 600;
+}
+
+.badge-warning {
+    background: rgba(255, 87, 34, 0.25);
+    color: #ff5722;
+    border: 1px solid rgba(255, 87, 34, 0.4);
+}
+
+.badge-ok {
+    background: rgba(76, 175, 80, 0.25);
+    color: #4caf50;
+    border: 1px solid rgba(76, 175, 80, 0.4);
+}
+
+.record-details p {
+    margin: 6px 0;
+    font-size: 15px;
+    color: #ddd;
+}
+
+.record-details b {
+    color: #00e6e6;
+}
+
+.no-records {
+    color: #888;
+    font-style: italic;
+    padding: 20px;
 }

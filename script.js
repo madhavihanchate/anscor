@@ -1,486 +1,330 @@
-// ======================
-// LOGIN FUNCTION
-// ======================
+// ============================================================
+//  ANISOR  —  Frontend Logic
+//  All pages share this script.
+// ============================================================
 
-function login() {
+const API_BASE = "";
 
-    let email = document.getElementById("email")?.value;
-    let password = document.getElementById("password")?.value;
 
-    if (!email || !password) {
+// ────────────────────────────────────────────────────────────
+//  SIGNUP  (signup.html)
+// ────────────────────────────────────────────────────────────
+function signup() {
+    const name     = (document.getElementById("name")     || {}).value || "";
+    const email    = (document.getElementById("email")    || {}).value || "";
+    const phone    = (document.getElementById("phone")    || {}).value || "";
+    const password = (document.getElementById("password") || {}).value || "";
+    const sex      = (document.getElementById("sex")      || {}).value || "";
+    const dob      = (document.getElementById("dob")      || {}).value || "";
+    const blood    = (document.getElementById("blood")    || {}).value || "";
+    const country  = (document.getElementById("country")  || {}).value || "";
 
-        alert("Please enter email and password");
+    if (!name.trim() || !email.trim() || !password.trim()) {
+        alert("Please fill in Name, Email, and Password.");
         return;
     }
 
-    alert("Login Successful");
+    fetch(`${API_BASE}/api/signup`, {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({
+            name:        name.trim(),
+            email:       email.trim(),
+            phone:       phone.trim(),
+            password:    password.trim(),
+            sex:         sex,
+            dob:         dob,
+            blood_group: blood,
+            country:     country.trim()
+        })
+    })
+    .then(res => res.json())
+    .then(data => {
+        if (data.status !== "success") {
+            alert("Signup failed: " + data.message);
+            return;
+        }
 
+        // Store patient info locally for quick access
+        const p = data.patient;
+        localStorage.setItem("patientId",   p.patient_id);
+        localStorage.setItem("name",        p.name);
+        localStorage.setItem("email",       p.email);
+        localStorage.setItem("phone",       p.phone);
+        localStorage.setItem("sex",         p.sex);
+        localStorage.setItem("dob",         p.dob);
+        localStorage.setItem("blood",       p.blood_group);
+        localStorage.setItem("country",     p.country);
+
+        alert("Account created successfully! Please sign in.");
+        window.location.href = "index.html";
+    })
+    .catch(err => {
+        console.error("Signup error:", err);
+        alert("Could not connect to server. Make sure backend is running.");
+    });
+}
+
+
+// ────────────────────────────────────────────────────────────
+//  LOGIN  (index.html)
+// ────────────────────────────────────────────────────────────
+function login() {
+    const email    = document.getElementById("email").value.trim();
+    const password = document.getElementById("password").value.trim();
+
+    if (!email || !password) {
+        alert("Please enter your email and password.");
+        return;
+    }
+
+    fetch(`${API_BASE}/api/login`, {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({ email, password })
+    })
+    .then(res => res.json())
+    .then(data => {
+        if (data.status !== "success") {
+            alert("Login failed: " + data.message);
+            return;
+        }
+
+        // Store patient info locally
+        const p = data.patient;
+        localStorage.setItem("patientId",   p.patient_id);
+        localStorage.setItem("name",        p.name);
+        localStorage.setItem("email",       p.email);
+        localStorage.setItem("phone",       p.phone);
+        localStorage.setItem("sex",         p.sex);
+        localStorage.setItem("dob",         p.dob);
+        localStorage.setItem("blood",       p.blood_group);
+        localStorage.setItem("country",     p.country);
+
+        window.location.href = "home.html";
+    })
+    .catch(err => {
+        console.error("Login error:", err);
+        alert("Could not connect to server. Make sure backend is running.");
+    });
+}
+
+
+// ────────────────────────────────────────────────────────────
+//  NAVIGATION HELPERS
+// ────────────────────────────────────────────────────────────
+function goProfile() {
+    window.location.href = "profile.html";
+}
+
+function goUpload() {
+    window.location.href = "upload.html";
+}
+
+function goHome() {
     window.location.href = "home.html";
 }
 
 
-// ======================
-// SIGNUP FUNCTION
-// ======================
-
-function signup() {
-
-    let name = document.getElementById("name")?.value;
-    let email = document.getElementById("email")?.value;
-    let phone = document.getElementById("phone")?.value;
-    let password = document.getElementById("password")?.value;
-    let sex = document.getElementById("sex")?.value;
-    let dob = document.getElementById("dob")?.value;
-    let blood = document.getElementById("blood")?.value;
-    let country = document.getElementById("country")?.value;
-
-    if (
-        !name ||
-        !email ||
-        !phone ||
-        !password ||
-        !sex ||
-        !dob ||
-        !blood ||
-        !country
-    ) {
-
-        alert("Please fill all fields");
-        return;
-    }
-
-    // SAVE USER DATA
-
-    localStorage.setItem("name", name);
-    localStorage.setItem("email", email);
-    localStorage.setItem("phone", phone);
-    localStorage.setItem("password", password);
-    localStorage.setItem("sex", sex);
-    localStorage.setItem("dob", dob);
-    localStorage.setItem("blood", blood);
-    localStorage.setItem("country", country);
-
-    alert("Signup Successful");
-
-    // GO TO LOGIN PAGE
-
-    window.location.href = "index.html";
-}
-
-
-// ======================
-// NAVIGATION
-// ======================
-
-function goUpload() {
-
-    window.location.href = "upload.html";
-}
-
-function goProfile() {
-
-    window.location.href = "profile.html";
-}
-
-
-// ======================
-// VALIDATE SURVEY
-// ======================
-
-function validateSurvey() {
-
-    let fileInput =
-        document.getElementById("fileInput");
-
-    if (!fileInput || fileInput.files.length === 0) {
-
-        alert("Please upload image first!");
-        return;
-    }
-
-    let checkboxes = document.querySelectorAll(
-        '.symptom-row input[type="checkbox"]'
+// ────────────────────────────────────────────────────────────
+//  SYMPTOM SUBMIT  (upload.html — "Submit Symptoms" button)
+// ────────────────────────────────────────────────────────────
+function submitSymptoms() {
+    const checkboxes = document.querySelectorAll(
+        ".symptom-row input[type='checkbox']:checked"
     );
 
-    let checked = false;
+    const symptoms = Array.from(checkboxes).map(cb => cb.value);
 
-    checkboxes.forEach((box) => {
-
-        if (box.checked) {
-            checked = true;
-        }
-    });
-
-    if (!checked) {
-
-        alert("Please select symptoms!");
-        return;
-    }
+    localStorage.setItem("symptoms", JSON.stringify(symptoms));
 
     alert(
-        "Survey completed successfully!"
+        symptoms.length > 0
+            ? `${symptoms.length} symptom(s) saved.`
+            : "No symptoms selected — saved as none."
     );
 }
 
 
-// ======================
-// SUBMIT SYMPTOMS
-// ======================
+// ────────────────────────────────────────────────────────────
+//  VALIDATE SURVEY  (upload.html — "Analyze Image" button)
+// ────────────────────────────────────────────────────────────
+function validateSurvey() {
+    const fileInput = document.getElementById("fileInput");
 
-async function submitSymptoms() {
-
-    let fileInput =
-        document.getElementById("fileInput");
-
-    // CHECK IMAGE
-
-    if (!fileInput || fileInput.files.length === 0) {
-
-        alert("Please upload image first!");
+    if (!fileInput || !fileInput.files || fileInput.files.length === 0) {
+        alert("Please select a nail image before analyzing.");
         return;
     }
 
-    // GET SYMPTOMS
+    // Auto-save symptoms before analyzing
+    submitSymptoms();
 
-    let symptoms = [];
+    // Proceed to analysis
+    analyzeImage(fileInput.files[0]);
+}
 
-    document
-        .querySelectorAll(
-            '.symptom-row input[type="checkbox"]:checked'
-        )
-        .forEach((cb) => {
 
-            symptoms.push(cb.value);
-        });
+// ────────────────────────────────────────────────────────────
+//  ANALYZE IMAGE  — sends image to backend, stores result
+// ────────────────────────────────────────────────────────────
+function analyzeImage(file) {
+    const analyzeBtn = document.getElementById("analyzeBtn");
 
-    if (symptoms.length === 0) {
-
-        alert("Please select symptoms!");
-        return;
+    if (analyzeBtn) {
+        analyzeBtn.innerText   = "Analyzing…";
+        analyzeBtn.disabled    = true;
     }
 
-    // SAVE SYMPTOMS
+    // Save a base64 preview of the image for result.html
+    const reader = new FileReader();
+    reader.onload = function (e) {
+        localStorage.setItem("uploadedImage", e.target.result);
+    };
+    reader.readAsDataURL(file);
 
-    localStorage.setItem(
-        "symptoms",
-        JSON.stringify(symptoms)
-    );
+    // Build multipart form data
+    const formData = new FormData();
+    formData.append("image", file);
 
-    // CREATE FORM DATA
+    // Include patient_id and symptoms so backend auto-saves the record
+    const patientId = localStorage.getItem("patientId") || "";
+    const symptoms  = localStorage.getItem("symptoms")  || "[]";
+    formData.append("patient_id", patientId);
+    formData.append("symptoms",   symptoms);
 
-    let formData = new FormData();
-
-    formData.append(
-        "image",
-        fileInput.files[0]
-    );
-
-    try {
-
-        // BACKEND CALL
-
-        const response = await fetch(
-            "http://127.0.0.1:5000/predict",
-            {
-                method: "POST",
-                body: formData
-            }
-        );
-
+    fetch(`${API_BASE}/upload`, {
+        method: "POST",
+        body:   formData
+    })
+    .then(response => {
         if (!response.ok) {
-
-            throw new Error("Server Error");
+            return response.json().then(err => { throw new Error(err.message || "Server error"); });
+        }
+        return response.json();
+    })
+    .then(data => {
+        if (data.status !== "success") {
+            throw new Error(data.message || "Prediction failed.");
         }
 
-        const data = await response.json();
+        // Store results for result.html
+        localStorage.setItem("prediction",  data.result);
+        localStorage.setItem("confidence",  data.confidence);
+        localStorage.setItem("hemoglobin",  data.hemoglobin);
 
-        console.log(data);
+        // Redirect to results page
+        window.location.href = "result.html";
+    })
+    .catch(error => {
+        console.error("Analysis error:", error);
+        alert("Error: " + error.message + "\n\nMake sure backend/app.py is running.");
 
-        // SAVE RESULT
-
-        localStorage.setItem(
-            "prediction",
-            data.result
-        );
-
-        localStorage.setItem(
-            "confidence",
-            data.confidence
-        );
-
-        localStorage.setItem(
-            "hemoglobin",
-            data.hemoglobin
-        );
-
-        // SAVE IMAGE
-
-        let imageURL =
-            URL.createObjectURL(
-                fileInput.files[0]
-            );
-
-        localStorage.setItem(
-            "uploadedImage",
-            imageURL
-        );
-
-        // SAVE UNIQUE PATIENT ID
-
-        if (!localStorage.getItem("patientId")) {
-
-            let patientId =
-                "P" +
-                Math.floor(
-                    100000 +
-                    Math.random() * 900000
-                );
-
-            localStorage.setItem(
-                "patientId",
-                patientId
-            );
+        if (analyzeBtn) {
+            analyzeBtn.innerText  = "Analyze Image";
+            analyzeBtn.disabled   = false;
         }
-
-        // GO TO RESULT PAGE
-
-        window.location.href =
-            "result.html";
-
-    } catch (error) {
-
-        console.error(error);
-
-        alert(
-            "Backend connection failed!"
-        );
-    }
-}
-
-
-// ======================
-// ANALYZE SYMPTOMS
-// ======================
-
-function analyzeSymptoms() {
-
-    const symptoms =
-        JSON.parse(
-            localStorage.getItem("symptoms")
-        ) || [];
-
-    let symptomList =
-        document.getElementById(
-            "symptomList"
-        );
-
-    if (!symptomList) return;
-
-    symptomList.innerHTML = "";
-
-    symptoms.forEach((symptom) => {
-
-        let li =
-            document.createElement("li");
-
-        li.innerText = symptom;
-
-        symptomList.appendChild(li);
     });
 }
 
 
-// ======================
-// PAGE LOAD
-// ======================
+// ────────────────────────────────────────────────────────────
+//  LOAD PROFILE  (profile.html)
+// ────────────────────────────────────────────────────────────
+function loadProfile() {
+    const patientId = localStorage.getItem("patientId");
 
-window.onload = function () {
+    // Populate from localStorage first (instant)
+    setText("name",    localStorage.getItem("name"));
+    setText("email",   localStorage.getItem("email"));
+    setText("phone",   localStorage.getItem("phone"));
+    setText("sex",     localStorage.getItem("sex"));
+    setText("dob",     localStorage.getItem("dob"));
+    setText("blood",   localStorage.getItem("blood"));
+    setText("country", localStorage.getItem("country"));
+    setText("pid",     patientId);
 
-    // ======================
-    // RESULT PAGE
-    // ======================
-
-    let prediction =
-        localStorage.getItem("prediction");
-
-    let uploadedImage =
-        localStorage.getItem("uploadedImage");
-
-    let resultText =
-        document.getElementById(
-            "predictionText"
-        );
-
-    let resultImage =
-        document.getElementById(
-            "uploadedImage"
-        );
-
-    if (prediction && resultText) {
-
-        if (
-            prediction.toLowerCase().includes("anemic")
-        ) {
-
-            resultText.innerText =
-                "Potential Anemia Indicated";
-
-        } else {
-
-            resultText.innerText =
-                "No Anemia Detected";
-        }
+    // Calculate age from DOB
+    const dob = localStorage.getItem("dob");
+    if (dob) {
+        const age = Math.floor((Date.now() - new Date(dob).getTime()) / (365.25 * 24 * 60 * 60 * 1000));
+        setText("age", age + " years");
     }
 
-    if (uploadedImage && resultImage) {
-
-        resultImage.src = uploadedImage;
-    }
-
-    analyzeSymptoms();
-
-
-    // ======================
-    // PROFILE PAGE
-    // ======================
-
-    let name =
-        localStorage.getItem("name");
-
-    let email =
-        localStorage.getItem("email");
-
-    let phone =
-        localStorage.getItem("phone");
-
-    let sex =
-        localStorage.getItem("sex");
-
-    let dob =
-        localStorage.getItem("dob");
-
-    let blood =
-        localStorage.getItem("blood");
-
-    let country =
-        localStorage.getItem("country");
-
-    if (document.getElementById("profileName")) {
-
-        document.getElementById(
-            "profileName"
-        ).innerText = name || "";
-
-        document.getElementById(
-            "profileEmail"
-        ).innerText = email || "";
-
-        document.getElementById(
-            "profilePhone"
-        ).innerText = phone || "";
-
-        document.getElementById(
-            "profileSex"
-        ).innerText = sex || "";
-
-        document.getElementById(
-            "profileDOB"
-        ).innerText = dob || "";
-
-        document.getElementById(
-            "bloodGroup"
-        ).innerText = blood || "";
-
-        document.getElementById(
-            "countryName"
-        ).innerText = country || "";
-    }
-
-
-    // ======================
-    // AGE CALCULATION
-    // ======================
-
-    if (dob && document.getElementById("fullAge")) {
-
-        let birthDate =
-            new Date(dob);
-
-        let today =
-            new Date();
-
-        let years =
-            today.getFullYear() -
-            birthDate.getFullYear();
-
-        let months =
-            today.getMonth() -
-            birthDate.getMonth();
-
-        let days =
-            today.getDate() -
-            birthDate.getDate();
-
-        if (days < 0) {
-
-            months--;
-            days += 30;
-        }
-
-        if (months < 0) {
-
-            years--;
-            months += 12;
-        }
-
-        document.getElementById(
-            "fullAge"
-        ).innerHTML =
-            years +
-            " Years " +
-            months +
-            " Months " +
-            days +
-            " Days";
-    }
-
-
-    // ======================
-    // PATIENT DETAILS
-    // ======================
-
-    let patientName =
-        document.getElementById(
-            "patientName"
-        );
-
-    let patientId =
-        document.getElementById(
-            "patientId"
-        );
-
-    let examDate =
-        document.getElementById(
-            "examDate"
-        );
-
-    if (patientName) {
-
-        patientName.innerText =
-            name || "User";
-    }
-
+    // Then fetch fresh data from backend
     if (patientId) {
+        fetch(`${API_BASE}/api/patient/${patientId}`)
+        .then(res => res.json())
+        .then(data => {
+            if (data.status === "success") {
+                const p = data.patient;
+                setText("name",    p.name);
+                setText("email",   p.email);
+                setText("phone",   p.phone);
+                setText("sex",     p.sex);
+                setText("dob",     p.dob);
+                setText("blood",   p.blood_group);
+                setText("country", p.country);
+            }
+        })
+        .catch(err => console.warn("Could not fetch profile from server:", err));
 
-        patientId.innerText =
-            localStorage.getItem(
-                "patientId"
-            );
+        // Load past records
+        loadRecords(patientId);
     }
+}
 
-    if (examDate) {
 
-        examDate.innerText =
-            new Date().toDateString();
-    }
-};
+// ────────────────────────────────────────────────────────────
+//  LOAD RECORDS  (profile.html — past diagnosis history)
+// ────────────────────────────────────────────────────────────
+function loadRecords(patientId) {
+    const container = document.getElementById("recordsContainer");
+    if (!container) return;
+
+    fetch(`${API_BASE}/api/records/${patientId}`)
+    .then(res => res.json())
+    .then(data => {
+        if (data.status !== "success" || !data.records || data.records.length === 0) {
+            container.innerHTML = "<p class='no-records'>No past diagnosis records found.</p>";
+            return;
+        }
+
+        let html = "";
+        data.records.forEach((r, i) => {
+            const date      = new Date(r.exam_date).toLocaleDateString("en-IN", { day: "numeric", month: "short", year: "numeric" });
+            const isAnemia  = r.result.toLowerCase().includes("anemia") && r.result.toLowerCase().includes("detected");
+            const badgeClass = isAnemia ? "badge-warning" : "badge-ok";
+            const symptoms   = r.symptoms && r.symptoms.length > 0 ? r.symptoms.join(", ") : "None";
+
+            html += `
+                <div class="record-card">
+                    <div class="record-header">
+                        <span class="record-date">${date}</span>
+                        <span class="record-badge ${badgeClass}">${r.result}</span>
+                    </div>
+                    <div class="record-details">
+                        <p><b>Confidence:</b> ${r.confidence}</p>
+                        <p><b>Hemoglobin:</b> ${r.hemoglobin}</p>
+                        <p><b>Symptoms:</b> ${symptoms}</p>
+                    </div>
+                </div>
+            `;
+        });
+
+        container.innerHTML = html;
+    })
+    .catch(err => {
+        console.warn("Could not load records:", err);
+        container.innerHTML = "<p class='no-records'>Could not load records from server.</p>";
+    });
+}
+
+
+// ────────────────────────────────────────────────────────────
+//  UTILITY
+// ────────────────────────────────────────────────────────────
+function setText(id, value) {
+    const el = document.getElementById(id);
+    if (el) el.innerText = value || "—";
+}

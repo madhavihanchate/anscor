@@ -5,17 +5,11 @@
 
     <meta charset="UTF-8">
 
-    <meta
-        name="viewport"
-        content="width=device-width, initial-scale=1.0"
-    >
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
 
     <title>Check Anemia</title>
 
-    <link
-        rel="stylesheet"
-        href="style.css"
-    >
+    <link rel="stylesheet" href="style.css">
 
 </head>
 
@@ -25,7 +19,7 @@
 
     <div class="navbar">
 
-        <h2>ANSCOR-AI</h2>
+        <h2>ANISOR</h2>
 
         <button onclick="goProfile()">
 
@@ -60,19 +54,11 @@
 
             <!-- MAIN INPUT -->
 
-            <input
-                id="fileInput"
-                type="file"
-                accept="image/*"
-                hidden
-            >
+            <input id="fileInput" type="file" accept="image/*" hidden>
 
             <!-- CAMERA -->
 
-            <label
-                for="fileInput"
-                class="upload-option"
-            >
+            <label for="fileInput" class="upload-option">
 
                 📷 Camera
 
@@ -80,10 +66,7 @@
 
             <!-- PHOTOS -->
 
-            <label
-                for="fileInput"
-                class="upload-option"
-            >
+            <label for="fileInput" class="upload-option">
 
                 🖼 Photos
 
@@ -91,10 +74,7 @@
 
             <!-- FILES -->
 
-            <label
-                for="fileInput"
-                class="upload-option"
-            >
+            <label for="fileInput" class="upload-option">
 
                 📁 Files
 
@@ -106,17 +86,14 @@
 
         <div class="preview-container">
 
-            <img
-                id="previewImage"
-                style="
+            <img id="previewImage" style="
                     display:none;
                     width:220px;
                     height:220px;
                     object-fit:cover;
                     border-radius:15px;
                     margin-top:20px;
-                "
-            >
+                ">
 
         </div>
 
@@ -189,21 +166,15 @@
 
         <div class="button-group">
 
-            <button
-                id="analyzeBtn"
-                onclick="validateSurvey()"
-            >
+            <button id="submitBtn" onclick="submitSymptoms()">
 
-                Analyze Image
+                Submit Symptoms
 
             </button>
 
-            <button
-                id="submitBtn"
-                onclick="submitSymptoms()"
-            >
+            <button id="analyzeBtn" onclick="validateSurvey()">
 
-                Submit Symptoms
+                Analyze Image
 
             </button>
 

@@ -1,0 +1,19 @@
+# Dependencies
+venv/
+__pycache__/
+*.pyc
+
+# Uploads (runtime data)
+backend/uploads/*
+!backend/uploads/.gitkeep
+
+# Database (runtime data)
+backend/anscor.db
+
+# IDE
+.vscode/
+.idea/
+
+# OS
+.DS_Store
+Thumbs.db

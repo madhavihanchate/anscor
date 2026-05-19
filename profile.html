@@ -1,37 +1,70 @@
 <!DOCTYPE html>
-<html>
+<html lang="en">
+
 <head>
-<title>Profile</title>
-<link rel="stylesheet" href="style.css">
-<meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Profile - ANISOR</title>
+    <link rel="stylesheet" href="style.css">
 </head>
 
-<body>
+<body class="upload-page">
 
-<div class="profile-box">
-    <h2>User Profile</h2>
+    <!-- NAVBAR -->
 
-    <p><b>Name:</b> <span id="name"></span></p>
-    <p><b>Email:</b> <span id="email"></span></p>
-    <p><b>Phone:</b> <span id="phone"></span></p>
-    <p><b>Sex:</b> <span id="sex"></span></p>
-    <p><b>DOB:</b> <span id="dob"></span></p>
-    <p id="fullAge"></p>
-    <p><b>Blood Group:</b> <span id="blood"></span></p>
-    <p><b>Country:</b> <span id="country"></span></p>
-</div>
+    <div class="navbar">
 
-<script>
-document.getElementById("name").innerText = localStorage.getItem("name");
-document.getElementById("email").innerText = localStorage.getItem("email");
-document.getElementById("phone").innerText = localStorage.getItem("phone");
+        <h2>ANISOR</h2>
 
-document.getElementById("sex").innerText = localStorage.getItem("sex");
-document.getElementById("dob").innerText = localStorage.getItem("dob");
-document.getElementById("age").innerText = localStorage.getItem("age");
-document.getElementById("blood").innerText = localStorage.getItem("blood");
-document.getElementById("country").innerText = localStorage.getItem("country");
-</script>
+        <button onclick="goHome()">Home</button>
+
+    </div>
+
+
+    <!-- PROFILE SECTION -->
+
+    <div class="section" style="margin-top:40px;">
+
+        <h2>Patient Profile</h2>
+
+        <div class="profile-info">
+
+            <p><b>Patient ID:</b> <span id="pid"></span></p>
+            <p><b>Name:</b> <span id="name"></span></p>
+            <p><b>Email:</b> <span id="email"></span></p>
+            <p><b>Phone:</b> <span id="phone"></span></p>
+            <p><b>Sex:</b> <span id="sex"></span></p>
+            <p><b>Date of Birth:</b> <span id="dob"></span></p>
+            <p><b>Age:</b> <span id="age"></span></p>
+            <p><b>Blood Group:</b> <span id="blood"></span></p>
+            <p><b>Country:</b> <span id="country"></span></p>
+
+        </div>
+
+    </div>
+
+
+    <!-- PAST RECORDS SECTION -->
+
+    <div class="section">
+
+        <h2>Past Diagnosis Records</h2>
+
+        <div id="recordsContainer">
+
+            <p class="no-records">Loading records...</p>
+
+        </div>
+
+    </div>
+
+    <script src="script.js"></script>
+
+    <script>
+        // Load profile and records on page load
+        loadProfile();
+    </script>
 
 </body>
+
 </html>

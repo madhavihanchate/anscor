@@ -1,97 +1,28 @@
 <!DOCTYPE html>
-<html>
+<html lang="en">
 <head>
-<title>Home</title>
-<link rel="stylesheet" href="style.css">
-<meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Home - ANISOR</title>
+    <link rel="stylesheet" href="style.css">
 </head>
+<body class="home-page">
 
-<body>
-
+<!-- NAVBAR -->
 <div class="navbar">
-    <h2>ANSCOR-AI</h2>
-    <button onclick="goProfile()">Profile</button>
+    <h2>ANISOR</h2>
+    <div class="nav-buttons">
+        <button onclick="goProfile()">Profile</button>
+    </div>
 </div>
 
-<h1>Welcome</h1>
-
-<button onclick="goUpload()">Check Anemia</button>
-
+<!-- MAIN CONTENT -->
+<div class="home-container">
+    <h1>Welcome to ANISOR</h1>
+    <p>AI-Based Non-Invasive Anemia Detection System</p>
+    <button class="main-btn" id="predictBtn" onclick="goUpload()">Check Anemia</button>
+</div>
 
 <script src="script.js"></script>
 </body>
-</html><!DOCTYPE html>
-<html lang="en">
-
-<head>
-
-    <meta charset="UTF-8">
-
-    <meta
-        name="viewport"
-        content="width=device-width, initial-scale=1.0"
-    >
-
-    <title>Home</title>
-
-    <link
-        rel="stylesheet"
-        href="style.css"
-    >
-
-</head>
-
-<body class="home-page">
-
-    <!-- NAVBAR -->
-
-    <div class="navbar">
-
-        <h2>ANSCOR-AI</h2>
-
-        <div class="nav-buttons">
-
-            <button onclick="goProfile()">
-
-                Profile
-
-            </button>
-
-        </div>
-
-    </div>
-
-
-    <!-- MAIN CONTENT -->
-
-    <div class="home-container">
-
-        <h1>
-
-            Welcome to ANSCOR-AI
-
-        </h1>
-
-        <p>
-
-            AI-Based Non-Invasive
-            Anemia Detection System
-
-        </p>
-
-        <button
-            class="main-btn"
-            onclick="goUpload()"
-        >
-
-            Check Anemia
-
-        </button>
-
-    </div>
-
-    <script src="script.js"></script>
-
-</body>
-
 </html>
