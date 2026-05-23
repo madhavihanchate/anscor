@@ -1,9 +1,10 @@
+import os
 import tensorflow as tf
-from tensorflow.keras.preprocessing.image import ImageDataGenerator
-from tensorflow.keras.applications import ResNet50
-from tensorflow.keras.models import Sequential
-from tensorflow.keras.layers import Dense, GlobalAveragePooling2D, Dropout
-from tensorflow.keras.optimizers import Adam
+from keras.preprocessing.image import ImageDataGenerator
+from keras.applications import ResNet50
+from keras.models import Sequential
+from keras.layers import Dense, GlobalAveragePooling2D, Dropout
+from keras.optimizers import Adam
 
 # DATASET PATH
 dataset_path = "classified"
@@ -11,6 +12,11 @@ dataset_path = "classified"
 # IMAGE SETTINGS
 IMG_SIZE = 224
 BATCH_SIZE = 16
+
+if not os.path.isdir(dataset_path):
+    raise FileNotFoundError(f"Dataset folder not found: {dataset_path}")
+
+os.makedirs("models", exist_ok=True)
 
 # LOAD DATA
 train_datagen = ImageDataGenerator(
