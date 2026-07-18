@@ -1,5 +1,4 @@
 ﻿import os
-import random
 
 from PIL import Image
 
@@ -51,39 +50,35 @@ def predict_anemia(image_path):
     """Predict anemia from an image path and return a prediction dict."""
     model = _load_model()
 
-    if model is not None:
-        try:
-            image_arr = _preprocess_image(image_path)
-            prediction = model.predict(image_arr)
-            score = float(prediction[0][0])
-            confidence = int(min(max(abs(score - 0.5) * 200, 50), 99))
+    if model is None:
+        return {
+            "result": "Model not available",
+            "confidence": "0%",
+            "hemoglobin": "N/A"
+        }
 
-            if score > 0.5:
-                result = "Mild/Moderate Anemia Detected"
-            else:
-                result = "No Anemia Detected"
+    try:
+        image_arr = _preprocess_image(image_path)
+        prediction = model.predict(image_arr)
+        score = float(prediction[0][0])
+        confidence = int(min(max(abs(score - 0.5) * 200, 50), 99))
 
-            hemoglobin = f"{round(13.0 - (score - 0.5) * 4.0, 1)} g/dL"
+        if score > 0.5:
+            result = "Mild/Moderate Anemia Detected"
+        else:
+            result = "No Anemia Detected"
 
-            return {
-                "result": result,
-                "confidence": f"{confidence}%",
-                "hemoglobin": hemoglobin
-            }
-        except Exception:
-            pass
+        hemoglobin = f"{round(13.0 - (score - 0.5) * 4.0, 1)} g/dL"
 
-    prediction_list = [
-        "No Anemia Detected",
-        "Mild Anemia Detected",
-        "Moderate Anemia Detected"
-    ]
-    result = random.choice(prediction_list)
-    confidence = random.randint(85, 99)
-    hemoglobin = round(random.uniform(8.5, 15.5), 1)
-
-    return {
-        "result": result,
-        "confidence": f"{confidence}%",
-        "hemoglobin": f"{hemoglobin} g/dL"
-    }
+        return {
+            "result": result,
+            "confidence": f"{confidence}%",
+            "hemoglobin": hemoglobin
+        }
+    except Exception as e:
+        print("PREDICTION ERROR:", e)
+        return {
+            "result": "Prediction Failed",
+            "confidence": "0%",
+            "hemoglobin": "N/A"
+        }

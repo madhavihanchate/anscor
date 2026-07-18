@@ -8,11 +8,13 @@ from flask import (
 from flask_cors import CORS
 
 import os
+import uuid
+import random
 
 from predict import predict_anemia
 from werkzeug.security import generate_password_hash, check_password_hash
+from werkzeug.utils import secure_filename
 from datetime import datetime
-import random
 
 # database
 from db import db, Patient, Record
@@ -24,7 +26,11 @@ from db import db, Patient, Record
 
 app = Flask(__name__)
 
-CORS(app)
+CORS(app, origins=["http://localhost:5000"])
+
+app.config["MAX_CONTENT_LENGTH"] = 10 * 1024 * 1024  # 10MB
+
+ALLOWED_EXTENSIONS = {"jpg", "jpeg", "png", "webp", "bmp", "tiff"}
 
 # ----------------------
 # Database configuration
@@ -69,11 +75,12 @@ def static_files(path):
 # UPLOAD FOLDER
 # ======================
 
-UPLOAD_FOLDER = "uploads"
+UPLOAD_FOLDER = os.path.join(
+    os.path.dirname(__file__),
+    "uploads"
+)
 
-if not os.path.exists(UPLOAD_FOLDER):
-
-    os.makedirs(UPLOAD_FOLDER)
+os.makedirs(UPLOAD_FOLDER, exist_ok=True)
 
 
 # ======================
@@ -99,7 +106,6 @@ def predict():
             }), 400
 
         file = request.files["image"]
-           
 
         # CHECK EMPTY FILE
 
@@ -110,13 +116,22 @@ def predict():
                 "No selected file"
             }), 400
 
-        # SAVE IMAGE
+        # VALIDATE FILE EXTENSION
 
-        filepath =os.path.join(
-            
-                UPLOAD_FOLDER,
-                file.filename
-            )
+        filename = secure_filename(file.filename)
+        ext = filename.rsplit(".", 1)[-1].lower() if "." in filename else ""
+
+        if ext not in ALLOWED_EXTENSIONS:
+
+            return jsonify({
+                "result":
+                "Invalid file type. Allowed: " + ", ".join(ALLOWED_EXTENSIONS)
+            }), 400
+
+        # SAVE IMAGE WITH UNIQUE NAME
+
+        unique_name = f"{uuid.uuid4().hex}_{filename}"
+        filepath = os.path.join(UPLOAD_FOLDER, unique_name)
 
         file.save(filepath)
 
@@ -179,16 +194,11 @@ def predict():
         print("ERROR:", e)
 
         return jsonify({
-
-            "result":
-                "Prediction Failed",
-
-            "confidence":
-                "0%",
-
-            "hemoglobin":
-                "0 g/dL"
-
+            "prediction": {
+                "result": "Prediction Failed",
+                "confidence": "0%",
+                "hemoglobin": "0 g/dL"
+            }
         }), 500
 
 
@@ -354,6 +364,4 @@ def login():
 
 if __name__ == "__main__":
 
-    app.run(
-        debug=True
-    )
+    app.run()
