@@ -2,7 +2,7 @@
 // LOGIN FUNCTION
 // ======================
 
-function login() {
+async function login() {
 
     let email = document.getElementById("email")?.value;
     let password = document.getElementById("password")?.value;
@@ -13,9 +13,42 @@ function login() {
         return;
     }
 
-    alert("Login Successful");
+    try {
 
-    window.location.href = "home.html";
+        const response = await fetch("/login", {
+
+            method: "POST",
+            headers: { "Content-Type": "application/json" },
+            body: JSON.stringify({ email, password })
+        });
+
+        const data = await response.json();
+
+        if (data.status === "error") {
+
+            alert(data.message);
+            return;
+        }
+
+        // Store patient data from server
+        let patient = data.patient;
+
+        localStorage.setItem("patientId", patient.patientId);
+        localStorage.setItem("name", patient.name);
+        localStorage.setItem("email", patient.email);
+        localStorage.setItem("phone", patient.phone || "");
+        localStorage.setItem("sex", patient.sex || "");
+        localStorage.setItem("dob", patient.dob || "");
+        localStorage.setItem("blood", patient.blood || "");
+        localStorage.setItem("country", patient.country || "");
+
+        window.location.href = "home.html";
+
+    } catch (error) {
+
+        console.error(error);
+        alert("Cannot connect to server. Please try again.");
+    }
 }
 
 
@@ -23,7 +56,7 @@ function login() {
 // SIGNUP FUNCTION
 // ======================
 
-function signup() {
+async function signup() {
 
     let name = document.getElementById("name")?.value;
     let email = document.getElementById("email")?.value;
@@ -49,20 +82,45 @@ function signup() {
         return;
     }
 
-    // SAVE USER DATA
+    try {
 
-    localStorage.setItem("name", name);
-    localStorage.setItem("email", email);
-    localStorage.setItem("phone", phone);
-    localStorage.setItem("password", password);
-    localStorage.setItem("sex", sex);
-    localStorage.setItem("dob", dob);
-    localStorage.setItem("blood", blood);
-    localStorage.setItem("country", country);
+        const response = await fetch("/signup", {
 
-    alert("Signup Successful");
+            method: "POST",
+            headers: { "Content-Type": "application/json" },
+            body: JSON.stringify({
+                name, email, phone, password,
+                sex, dob, blood, country
+            })
+        });
 
-    window.location.href = "index.html";
+        const data = await response.json();
+
+        if (data.status === "error") {
+
+            alert(data.message);
+            return;
+        }
+
+        // Store patient data (no password!)
+        localStorage.setItem("patientId", data.patientId);
+        localStorage.setItem("name", name);
+        localStorage.setItem("email", email);
+        localStorage.setItem("phone", phone);
+        localStorage.setItem("sex", sex);
+        localStorage.setItem("dob", dob);
+        localStorage.setItem("blood", blood);
+        localStorage.setItem("country", country);
+
+        alert("Signup Successful");
+
+        window.location.href = "index.html";
+
+    } catch (error) {
+
+        console.error(error);
+        alert("Cannot connect to server. Please try again.");
+    }
 }
 
 
@@ -172,11 +230,24 @@ async function submitSymptoms() {
             file
         );
 
+        let patientId =
+            localStorage.getItem(
+                "patientId"
+            );
+
+        if (patientId) {
+
+            formData.append(
+                "patientId",
+                patientId
+            );
+        }
+
         try {
 
             const response =
                 await fetch(
-                    "http://127.0.0.1:5000/predict",
+                    "/predict",
                     {
                         method: "POST",
                         body: formData
@@ -204,9 +275,11 @@ async function submitSymptoms() {
                 data.prediction.result
             );
 
+            let conf = String(data.prediction.confidence);
+
             localStorage.setItem(
                 "confidence",
-                data.prediction.confidence + "%"
+                conf.endsWith("%") ? conf : conf + "%"
             );
 
             localStorage.setItem(
@@ -218,24 +291,7 @@ async function submitSymptoms() {
             // PATIENT ID
             // ======================
 
-            if (
-                !localStorage.getItem(
-                    "patientId"
-                )
-            ) {
-
-                let patientId =
-                    "P" +
-                    Math.floor(
-                        100000 +
-                        Math.random() * 900000
-                    );
-
-                localStorage.setItem(
-                    "patientId",
-                    patientId
-                );
-            }
+            // patientId is already set by login/signup from server
 
             // ======================
             // GO RESULT PAGE

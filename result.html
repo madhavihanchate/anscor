@@ -250,27 +250,12 @@
 
 
         // ======================
-        // RANDOM PREDICTION
+        // NO RANDOM FALLBACKS
         // ======================
 
         if (!prediction) {
 
-            let predictions = [
-
-                "Mild Anemia Detected",
-                "Moderate Anemia Detected",
-                "Healthy",
-                "Iron Deficiency Detected"
-
-            ];
-
-            prediction =
-                predictions[
-                    Math.floor(
-                        Math.random() *
-                        predictions.length
-                    )
-                ];
+            prediction = "No prediction available";
         }
 
         document.getElementById(
@@ -280,15 +265,12 @@
 
 
         // ======================
-        // RANDOM HEMOGLOBIN
+        // NO RANDOM HEMOGLOBIN
         // ======================
 
         if (!hemoglobin) {
 
-            hemoglobin =
-                (
-                    Math.random() * 4 + 9
-                ).toFixed(1) + " g/dL";
+            hemoglobin = "N/A";
         }
 
         document.getElementById(
@@ -298,15 +280,12 @@
 
 
         // ======================
-        // RANDOM CONFIDENCE
+        // NO RANDOM CONFIDENCE
         // ======================
 
         if (!confidence) {
 
-            confidence =
-                Math.floor(
-                    Math.random() * 10 + 90
-                ) + "%";
+            confidence = "N/A";
         }
 
         document.getElementById(
