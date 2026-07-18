@@ -26,7 +26,7 @@ from db import db, Patient, Record
 
 app = Flask(__name__)
 
-CORS(app, origins=["http://localhost:5000"])
+CORS(app)
 
 app.config["MAX_CONTENT_LENGTH"] = 10 * 1024 * 1024  # 10MB
 
@@ -364,4 +364,5 @@ def login():
 
 if __name__ == "__main__":
 
-    app.run()
+    port = int(os.environ.get("PORT", 5000))
+    app.run(host="0.0.0.0", port=port)

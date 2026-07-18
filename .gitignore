@@ -3,7 +3,7 @@ __pycache__/
 *.pyo
 *.db
 uploads/
+classified/
 .env
-*.h5
 .vscode/
 .idea/

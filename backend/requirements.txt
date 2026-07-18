@@ -1,11 +1,10 @@
-tensorflow
-keras
-opencv-python
+tensorflow>=2.15,<2.22
+keras>=3.0,<4.0
 numpy
-pandas
-matplotlib
-scikit-learn
 pillow
 flask
 flask-cors
-Flask-SQLAlchemy
+flask-sqlalchemy
+werkzeug
+reportlab
+gunicorn
