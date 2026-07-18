@@ -1,53 +1,53 @@
 ﻿import os
+import numpy as np
 
 try:
-    import tensorflow as tf
-    from keras.utils import load_img, img_to_array
-    import numpy as np
-    TENSORFLOW_AVAILABLE = True
+    import onnxruntime as ort
+    from PIL import Image
+    ONNX_AVAILABLE = True
 except Exception:
-    TENSORFLOW_AVAILABLE = False
+    ONNX_AVAILABLE = False
 
 MODEL_PATH = os.path.join(
     os.path.dirname(__file__),
     "models",
-    "resnet50_model.h5"
+    "resnet50_model.onnx"
 )
 
 IMAGE_SIZE = (224, 224)
 
-_model = None
+_session = None
 
 
 def _load_model():
-    global _model
+    global _session
 
-    if _model is not None:
-        return _model
+    if _session is not None:
+        return _session
 
-    if not TENSORFLOW_AVAILABLE:
+    if not ONNX_AVAILABLE:
         return None
 
     if not os.path.exists(MODEL_PATH):
         return None
 
-    _model = tf.keras.models.load_model(MODEL_PATH)
-    return _model
+    _session = ort.InferenceSession(MODEL_PATH)
+    return _session
 
 
 def _preprocess_image(image_path):
-    image = load_img(image_path, target_size=IMAGE_SIZE)
-    image_arr = img_to_array(image)
-    image_arr = image_arr / 255.0
+    image = Image.open(image_path).convert("RGB")
+    image = image.resize(IMAGE_SIZE)
+    image_arr = np.array(image, dtype=np.float32) / 255.0
     image_arr = np.expand_dims(image_arr, axis=0)
     return image_arr
 
 
 def predict_anemia(image_path):
     """Predict anemia from an image path and return a prediction dict."""
-    model = _load_model()
+    session = _load_model()
 
-    if model is None:
+    if session is None:
         return {
             "result": "Model not available",
             "confidence": "0%",
@@ -56,8 +56,9 @@ def predict_anemia(image_path):
 
     try:
         image_arr = _preprocess_image(image_path)
-        prediction = model.predict(image_arr)
-        score = float(prediction[0][0])
+        input_name = session.get_inputs()[0].name
+        prediction = session.run(None, {input_name: image_arr})
+        score = float(prediction[0][0][0])
         confidence = int(min(max(abs(score - 0.5) * 200, 50), 99))
 
         if score > 0.5:

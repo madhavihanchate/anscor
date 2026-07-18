@@ -1,9 +1,15 @@
 __pycache__/
 *.pyc
 *.pyo
+*.pyd
 *.db
 uploads/
 classified/
 .env
 .vscode/
 .idea/
+convert_to_onnx.py
+*.h5
+*.keras
+backend/models/tf_saved/
+backend/models/saved_model/
