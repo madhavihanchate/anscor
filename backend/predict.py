@@ -1,10 +1,8 @@
 ﻿import os
 
-from PIL import Image
-
 try:
-    from keras.models import load_model
-    from keras.preprocessing.image import img_to_array
+    import tensorflow as tf
+    from keras.utils import load_img, img_to_array
     import numpy as np
     TENSORFLOW_AVAILABLE = True
 except Exception:
@@ -33,16 +31,15 @@ def _load_model():
     if not os.path.exists(MODEL_PATH):
         return None
 
-    _model = load_model(MODEL_PATH)
+    _model = tf.keras.models.load_model(MODEL_PATH)
     return _model
 
 
 def _preprocess_image(image_path):
-    image = Image.open(image_path).convert("RGB")
-    image = image.resize(IMAGE_SIZE)
+    image = load_img(image_path, target_size=IMAGE_SIZE)
     image_arr = img_to_array(image)
     image_arr = image_arr / 255.0
-    image_arr = image_arr.reshape((1, IMAGE_SIZE[0], IMAGE_SIZE[1], 3))
+    image_arr = np.expand_dims(image_arr, axis=0)
     return image_arr
 
 
