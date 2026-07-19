@@ -21,11 +21,11 @@
 
 </head>
 
-<body class="split">
+<body class="auth-page">
 
-    <!-- LEFT SIDE -->
+    <!-- BRAND HEADER -->
 
-    <div class="left">
+    <div class="brand-box">
 
         <h1>ANSCOR-AI</h1>
 
@@ -37,53 +37,49 @@
     </div>
 
 
-    <!-- RIGHT SIDE -->
+    <!-- SIGN IN FORM -->
 
-    <div class="right">
+    <div class="form-container">
 
-        <div class="form-container">
+        <h2>Sign In</h2>
 
-            <h2>Sign In</h2>
+        <!-- EMAIL -->
 
-            <!-- EMAIL -->
+        <input
+            id="email"
+            type="email"
+            placeholder="Email"
+        >
 
-            <input
-                id="email"
-                type="email"
-                placeholder="Email"
-            >
+        <!-- PASSWORD -->
 
-            <!-- PASSWORD -->
+        <input
+            id="password"
+            type="password"
+            placeholder="Password"
+        >
 
-            <input
-                id="password"
-                type="password"
-                placeholder="Password"
-            >
+        <!-- LOGIN BUTTON -->
 
-            <!-- LOGIN BUTTON -->
+        <button onclick="login()">
 
-            <button onclick="login()">
+            Sign In
 
-                Sign In
+        </button>
 
-            </button>
+        <!-- SIGNUP LINK -->
 
-            <!-- SIGNUP LINK -->
+        <p class="bottom-text">
 
-            <p class="bottom-text">
+            Don't have an account?
 
-                Don't have an account?
+            <a href="signup.html">
 
-                <a href="signup.html">
+                Create One
 
-                    Create One
+            </a>
 
-                </a>
-
-            </p>
-
-        </div>
+        </p>
 
     </div>
 

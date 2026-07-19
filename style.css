@@ -2,7 +2,7 @@ body {
     margin: 0;
     font-family: Arial;
 
-    background: linear-gradient(rgba(0,0,0,0.6), rgba(0,0,0,0.6)),
+    background: linear-gradient(rgba(255,255,255,0.15), rgba(255,255,255,0.15)),
                 url("./assets/medical.jpg");
 
     background-size: cover;
@@ -28,57 +28,111 @@ body {
     font-family: Arial;
 }
 
-/* Split layout */
-.split {
+/* Auth pages - horizontal layout */
+.auth-page {
     display: flex;
-    height: 100vh;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    min-height: 100vh;
+    padding: 30px 15px;
 }
 
-.left h1 {
-    font-size: 40px;
-    color: #00ffff;
+.brand-box {
+    background: rgba(180, 30, 30, 0.75);
+    backdrop-filter: blur(6px);
+    border-radius: 16px;
+    padding: 30px 50px;
+    text-align: center;
+    margin-bottom: 25px;
+    max-width: 450px;
+    width: 100%;
 }
 
-.left p {
-    color: #ffffff;
+.brand-box h1 {
+    font-size: 32px;
+    color: #fff;
+    margin: 0 0 10px 0;
+}
+
+.brand-box p {
+    font-size: 15px;
+    color: rgba(255,255,255,0.9);
+    margin: 0;
+    line-height: 1.5;
+}
+
+.auth-page .form-container {
+    background: rgba(0, 0, 0, 0.55);
+    backdrop-filter: blur(8px);
+    border-radius: 16px;
+    padding: 35px 40px;
+    max-width: 420px;
+    width: 100%;
+    text-align: center;
+}
+
+.auth-page .form-container h2 {
+    margin-top: 0;
+    margin-bottom: 25px;
+    font-size: 24px;
+}
+
+.auth-page input,
+.auth-page select {
+    width: 90%;
+    padding: 12px 15px;
+    margin: 8px 0;
+    border: none;
+    border-radius: 8px;
+    background: rgba(255,255,255,0.15);
+    color: white;
+    font-size: 15px;
+    outline: none;
+}
+
+.auth-page input::placeholder {
+    color: rgba(255,255,255,0.6);
+}
+
+.auth-page select {
+    color: rgba(255,255,255,0.7);
+}
+
+.auth-page button {
+    width: 95%;
+    padding: 13px;
+    margin-top: 15px;
+    font-size: 16px;
+    border-radius: 8px;
+    background: linear-gradient(135deg, #6a11cb, #2575fc);
+    color: white;
+    border: none;
+    cursor: pointer;
+    transition: transform 0.2s, box-shadow 0.2s;
+}
+
+.auth-page button:hover {
+    transform: scale(1.03);
+    box-shadow: 0 4px 20px rgba(37, 117, 252, 0.4);
+}
+
+.auth-page .bottom-text {
+    margin-top: 20px;
+    font-size: 14px;
+    color: rgba(255,255,255,0.7);
+}
+
+.auth-page .bottom-text a {
+    color: #80d0ff;
+    text-decoration: none;
     font-weight: bold;
 }
 
-.left {
-    width: 50%;
-    height: 100vh;
-    position: relative;
-
-    background: linear-gradient(rgba(0,0,0,0.6), rgba(0,0,0,0.6)),
-                url("./assets/bg.webp");
-    background-size: cover;
-    background-position: center;
-
-    color: #00e6e6;   /* cyan text */
+/* Split layout - kept for other pages if needed */
+.split {
     display: flex;
-    justify-content: center;
-    align-items: center;
-    flex-direction: column;
-}
-
-.right {
-    width: 50%;
-    padding: 50px;
-    background: #0d0d2b;
-    color: white;
-}
-
-input {
-    width: 80%;
-    padding: 10px;
-    margin: 10px;
-}
-
-button {
-    padding: 10px 20px;
-    background: purple;
-    color: white;
-    border: none;
+    height: 100vh;
 }
 
 /* Navbar */

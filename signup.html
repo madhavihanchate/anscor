@@ -19,11 +19,11 @@
 
 </head>
 
-<body class="split">
+<body class="auth-page">
 
-    <!-- LEFT SIDE -->
+    <!-- BRAND HEADER -->
 
-    <div class="left">
+    <div class="brand-box">
 
         <h1>ANSCOR-AI</h1>
 
@@ -35,128 +35,124 @@
     </div>
 
 
-    <!-- RIGHT SIDE -->
+    <!-- SIGN UP FORM -->
 
-    <div class="right">
+    <div class="form-container">
 
-        <div class="form-container">
+        <h2>Create Account</h2>
 
-            <h2>Create Account</h2>
+        <!-- FULL NAME -->
 
-            <!-- FULL NAME -->
+        <input
+            type="text"
+            id="name"
+            placeholder="Full Name"
+        >
 
-            <input
-                type="text"
-                id="name"
-                placeholder="Full Name"
-            >
+        <!-- EMAIL -->
 
-            <!-- EMAIL -->
+        <input
+            type="email"
+            id="email"
+            placeholder="Email"
+        >
 
-            <input
-                type="email"
-                id="email"
-                placeholder="Email"
-            >
+        <!-- PHONE -->
 
-            <!-- PHONE -->
+        <input
+            type="text"
+            id="phone"
+            placeholder="Phone Number"
+        >
 
-            <input
-                type="text"
-                id="phone"
-                placeholder="Phone Number"
-            >
+        <!-- PASSWORD -->
 
-            <!-- PASSWORD -->
+        <input
+            type="password"
+            id="password"
+            placeholder="Password"
+        >
 
-            <input
-                type="password"
-                id="password"
-                placeholder="Password"
-            >
+        <!-- SEX -->
 
-            <!-- SEX -->
+        <select id="sex">
 
-            <select id="sex">
+            <option value="">
+                Select Sex
+            </option>
 
-                <option value="">
-                    Select Sex
-                </option>
+            <option value="Male">
+                Male
+            </option>
 
-                <option value="Male">
-                    Male
-                </option>
+            <option value="Female">
+                Female
+            </option>
 
-                <option value="Female">
-                    Female
-                </option>
+            <option value="Other">
+                Other
+            </option>
 
-                <option value="Other">
-                    Other
-                </option>
+        </select>
 
-            </select>
+        <!-- DOB -->
 
-            <!-- DOB -->
+        <input
+            type="date"
+            id="dob"
+        >
 
-            <input
-                type="date"
-                id="dob"
-            >
+        <!-- BLOOD GROUP -->
 
-            <!-- BLOOD GROUP -->
+        <select id="blood">
 
-            <select id="blood">
+            <option value="">
+                Blood Group
+            </option>
 
-                <option value="">
-                    Blood Group
-                </option>
+            <option value="A+">A+</option>
+            <option value="A-">A-</option>
 
-                <option value="A+">A+</option>
-                <option value="A-">A-</option>
+            <option value="B+">B+</option>
+            <option value="B-">B-</option>
 
-                <option value="B+">B+</option>
-                <option value="B-">B-</option>
+            <option value="AB+">AB+</option>
+            <option value="AB-">AB-</option>
 
-                <option value="AB+">AB+</option>
-                <option value="AB-">AB-</option>
+            <option value="O+">O+</option>
+            <option value="O-">O-</option>
 
-                <option value="O+">O+</option>
-                <option value="O-">O-</option>
+        </select>
 
-            </select>
+        <!-- COUNTRY -->
 
-            <!-- COUNTRY -->
+        <input
+            type="text"
+            id="country"
+            placeholder="Country"
+        >
 
-            <input
-                type="text"
-                id="country"
-                placeholder="Country"
-            >
+        <!-- BUTTON -->
 
-            <!-- BUTTON -->
+        <button onclick="signup()">
 
-            <button onclick="signup()">
+            Register
 
-                Register
+        </button>
 
-            </button>
+        <!-- LOGIN LINK -->
 
-            <!-- LOGIN LINK -->
+        <p class="bottom-text">
 
-            <p class="bottom-text">
+            Already have an account?
 
-                Already have an account?
+            <a href="index.html">
 
-                <a href="index.html">
+                Login
 
-                    Login
+            </a>
 
-                </a>
-
-            </p>
-
-        </div>
+        </p>
 
     </div>
 
